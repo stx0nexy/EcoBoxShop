@@ -43,6 +43,7 @@ builder.Services.AddSwaggerGen(options =>
                 Scopes = new Dictionary<string, string>()
                 {
                     { "mvc", "website" },
+                    { "catalog.catalogbff", "catalog.catalogbff" },
                     { "catalog.catalogitem", "catalog.catalogitem" },
                     { "catalog.catalogbrand", "catalog.catalogbrand" },
                     { "catalog.catalogcategory", "catalog.catalogcategory" },

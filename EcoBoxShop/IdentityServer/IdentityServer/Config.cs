@@ -30,11 +30,27 @@ namespace IdentityServer
                 {
                     Scopes = new List<Scope>
                     {
+                        new Scope("catalog.catalogbff"),
                         new Scope("catalog.catalogitem"),
                         new Scope("catalog.catalogbrand"),
                         new Scope("catalog.catalogcategory"),
                         new Scope("catalog.catalogsubcategory"),
                     },
+                },
+                new ApiResource("basket")
+                {
+                    Scopes = new List<Scope>
+                    {
+                        new Scope("basket.api")
+                    }
+                },
+                new ApiResource("order")
+                {
+                    Scopes = new List<Scope>
+                    {
+                        new Scope("order.oprderbff.api"),
+                        new Scope("order.oprderitem.api")
+                    }
                 }
             };
         }
@@ -79,9 +95,57 @@ namespace IdentityServer
 
                     AllowedScopes =
                     {
-                        "mvc", "catalog.catalogitem", "catalog.catalogbrand", "catalog.catalogcategory", "catalog.catalogsubcategory"
+                        "mvc", "catalog.catalogbff", "catalog.catalogitem", "catalog.catalogbrand", "catalog.catalogcategory", "catalog.catalogsubcategory"
                     }
                 },
+                new Client
+                {
+                    ClientId = "basket",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    }
+                },
+                new Client
+                {
+                    ClientId = "basketswaggerui",
+                    ClientName = "Basket Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{configuration["BasketApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{configuration["BasketApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "mvc", "basket.api", "order.oprderbff.api", "catalog.catalogbff"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "order",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    }
+                },
+                new Client
+                {
+                    ClientId = "orderswaggerui",
+                    ClientName = "Order Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris = { $"{configuration["OrderApi"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{configuration["OrderApi"]}/swagger/" },
+
+                    AllowedScopes =
+                    {
+                        "mvc","order.oprderbff.api", "order.oprderitem.api", "catalog.catalogbff"
+                    }
+                }
             };
         }
     }
