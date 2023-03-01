@@ -38,9 +38,8 @@ builder.Services.AddSwaggerGen(options =>
                 Scopes = new Dictionary<string, string>()
                 {
                     { "mvc", "website" },
-                    { "catalog.catalogbff", "catalog.catalogbff" },
-                    { "basket.api", "basket.api" },
-                    { "order.oprderbff.api", "order.oprderbff.api" }
+                    { "basket", "basket" },
+                    { "order.orderbff", "order.orderbff" }
                 }
             }
         }
@@ -50,7 +49,9 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.AddConfiguration();
+builder.Services.AddAuthorization(configuration);
 builder.Services.Configure<Config>(configuration);
+builder.Services.Configure<RedisConfig>(builder.Configuration.GetSection("Redis"));
 
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IRedisCacheConnectionService, RedisCacheConnectionService>();
@@ -58,8 +59,6 @@ builder.Services.AddTransient<IBasketService, BasketService>();
 builder.Services.AddTransient<ICacheService, CacheService>();
 builder.Services.AddTransient<IJsonSerializer, JsonSerializer>();
 builder.Services.AddTransient<IInternalHttpClientService, InternalHttpClientService>();
-
-builder.Services.Configure<RedisConfig>(builder.Configuration.GetSection("Redis"));
 
 builder.Services.AddCors(options =>
 {

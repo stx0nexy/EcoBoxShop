@@ -5,8 +5,7 @@ namespace Order.Host.Services.Interfaces;
 
 public interface IOrderItemService
 {
-    Task<int?> Add(int catalogItemId);
-    Task<bool> Delete(int itemId);
+    Task<int?> Add(int catalogItemId, int orderListId);
+    Task<bool?> Delete(int itemId);
     Task<OrderListItemDto> Update(int itemId, int catalogItemId, int orderListId);
-    Task<ItemResponse> GetCatalogItemIdByItemId(int catalogItemId);
 }

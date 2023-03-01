@@ -11,8 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace Basket.Host.Controllers;
 
 [ApiController]
+[Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
 [Route(ComponentDefaults.DefaultRoute)]
-[Scope("basket.api")]
+[Scope("basket")]
 public class BasketBffController : ControllerBase
 {
     private readonly IBasketService _service;
@@ -27,19 +28,19 @@ public class BasketBffController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(BasketResponse<BasketItem>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> AddToBasket(AddRequest request)
     {
-        await _service.AddAsync(request.UserId, request.ItemId, request.CatalogItemId);
-        return Ok();
+        var result = await _service.AddAsync(request.UserId, request.ItemId, request.CatalogItemId);
+        return Ok(result);
     }
 
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> DeleteItemFromBasket(RemoveRequest request)
     {
-        await _service.DeleteAsync(request.UserId, request.ItemId);
-        return Ok();
+        var result = await _service.DeleteAsync(request.UserId, request.ItemId);
+        return Ok(result);
     }
 
     [HttpPost]
@@ -56,13 +57,5 @@ public class BasketBffController : ControllerBase
     {
         await _service.CreateOrderAsync(request.UserId);
         return Ok();
-    }
-
-    [HttpPost]
-    [ProducesResponseType(typeof(ItemResponse), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> GetCatalogItem(CatalogItemByIdRequest request)
-    {
-        var result = await _service.GetItemAsync(request.Id);
-        return Ok(result);
     }
 }

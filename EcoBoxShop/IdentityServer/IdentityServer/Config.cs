@@ -30,7 +30,6 @@ namespace IdentityServer
                 {
                     Scopes = new List<Scope>
                     {
-                        new Scope("catalog.catalogbff"),
                         new Scope("catalog.catalogitem"),
                         new Scope("catalog.catalogbrand"),
                         new Scope("catalog.catalogcategory"),
@@ -41,15 +40,15 @@ namespace IdentityServer
                 {
                     Scopes = new List<Scope>
                     {
-                        new Scope("basket.api")
+                        new Scope("basket")
                     }
                 },
                 new ApiResource("order")
                 {
                     Scopes = new List<Scope>
                     {
-                        new Scope("order.oprderbff.api"),
-                        new Scope("order.oprderitem.api")
+                        new Scope("order.orderbff"),
+                        new Scope("order.oprderitem")
                     }
                 }
             };
@@ -95,7 +94,7 @@ namespace IdentityServer
 
                     AllowedScopes =
                     {
-                        "mvc", "catalog.catalogbff", "catalog.catalogitem", "catalog.catalogbrand", "catalog.catalogcategory", "catalog.catalogsubcategory"
+                        "mvc", "catalog.catalogitem", "catalog.catalogbrand", "catalog.catalogcategory", "catalog.catalogsubcategory"
                     }
                 },
                 new Client
@@ -119,7 +118,7 @@ namespace IdentityServer
 
                     AllowedScopes =
                     {
-                        "mvc", "basket.api", "order.oprderbff.api", "catalog.catalogbff"
+                        "mvc", "basket", "order.orderbff"
                     }
                 },
                 new Client
@@ -143,7 +142,7 @@ namespace IdentityServer
 
                     AllowedScopes =
                     {
-                        "mvc","order.oprderbff.api", "order.oprderitem.api", "catalog.catalogbff"
+                        "mvc", "order.orderbff", "order.oprderitem"
                     }
                 }
             };

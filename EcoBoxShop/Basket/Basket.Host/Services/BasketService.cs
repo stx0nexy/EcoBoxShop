@@ -28,8 +28,14 @@ public class BasketService : IBasketService
         _logger = logger;
     }
 
-    public async Task AddAsync(string userId, int itemId, int catalogItemId)
+    public async Task<UserBasket?> AddAsync(string userId, int itemId, int catalogItemId)
     {
+        if (userId == null)
+        {
+            _logger.LogInformation($"Can not created basket for user {userId} ");
+            return null;
+        }
+
         var result = await _cacheService.GetAsync<UserBasket>(userId);
         if (result == null)
         {
@@ -42,21 +48,36 @@ public class BasketService : IBasketService
                 ItemId = itemId,
                 CatalogItemId = catalogItemId
             });
+
         _logger.LogInformation($"Add item {itemId} to basket ");
         await _cacheService.AddOrUpdateAsync(userId, result);
+        return result;
     }
 
-    public async Task DeleteAsync(string userId, int itemId)
+    public async Task<bool?> DeleteAsync(string userId, int itemId)
     {
         var basket = await _cacheService.GetAsync<UserBasket>(userId);
+        if (basket == null)
+        {
+            _logger.LogInformation($"Can not find Basket for user{userId}");
+            return null;
+        }
+
         var basketItem = basket.BasketList.FirstOrDefault(f => f!.ItemId == itemId);
         basket.BasketList.Remove(basketItem);
         _logger.LogInformation($"Deleted item {itemId} in basket for user {userId} ");
         await _cacheService.AddOrUpdateAsync(userId, basket);
+        return true;
     }
 
-    public async Task<UserBasket> GetBasketAsync(string userId)
+    public async Task<UserBasket?> GetBasketAsync(string userId)
     {
+        if (userId == null)
+        {
+            _logger.LogInformation($"Can not created basket for user {userId} ");
+            return null;
+        }
+
         var result = await _cacheService.GetAsync<UserBasket>(userId);
         if (result == null)
         {
@@ -85,19 +106,5 @@ public class BasketService : IBasketService
                 BasketList = basket.BasketList
             });
         _logger.LogInformation($"Post basket to Order");
-    }
-
-    public async Task<ItemResponse> GetItemAsync(int catalogItemId)
-    {
-        var result = await _httpClient.SendAsync<ItemResponse, CatalogItemByIdRequest>(
-            $"{_config.CatalogApi}/item",
-            HttpMethod.Post,
-            new CatalogItemByIdRequest()
-            {
-                Id = catalogItemId
-            });
-
-        _logger.LogInformation($"Received item from Catalog");
-        return result;
     }
 }

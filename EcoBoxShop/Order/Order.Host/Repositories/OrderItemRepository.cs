@@ -19,11 +19,12 @@ public class OrderItemRepository : IOrderItemRepository
         _logger = logger;
     }
 
-    public async Task<int?> AddAsync(int catalogItemId)
+    public async Task<int?> AddAsync(int catalogItemId, int orderListId)
     {
         var entity = await _dbContext.OrderListItems.AddAsync(new OrderListItemEntity()
         {
-            CatalogItemId = catalogItemId
+            CatalogItemId = catalogItemId,
+            OrderListId = orderListId
         });
         _logger.LogInformation("Add Order List Item to DB");
 
@@ -31,7 +32,7 @@ public class OrderItemRepository : IOrderItemRepository
         return entity?.Entity.ItemId;
     }
 
-    public async Task<bool> DeleteAsync(int itemId)
+    public async Task<bool?> DeleteAsync(int itemId)
     {
         var result = await _dbContext.OrderListItems.FirstAsync(c => c.ItemId == itemId);
         _dbContext.OrderListItems.Remove(result);

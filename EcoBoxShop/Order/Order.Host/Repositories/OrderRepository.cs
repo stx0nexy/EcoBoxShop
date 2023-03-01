@@ -37,7 +37,7 @@ public class OrderRepository : IOrderRepository
         return entity.Entity.OrderListId;
     }
 
-    public async Task<bool> DeleteAsync(int orderId)
+    public async Task<bool?> DeleteAsync(int orderId)
     {
         var result = await _dbContext.OrderLists.FirstAsync(c => c.OrderListId == orderId);
         _dbContext.OrderLists.Remove(result);

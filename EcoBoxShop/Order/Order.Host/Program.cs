@@ -42,9 +42,8 @@ builder.Services.AddSwaggerGen(options =>
                 Scopes = new Dictionary<string, string>()
                 {
                     { "mvc", "website" },
-                    { "order.oprderbff.api", "order.oprderbff.api" },
-                    { "order.oprderitem.api", "order.oprderitem.api" },
-                    { "catalog.catalogbff", "catalog.catalogbff" }
+                    { "order.oprderitem", "order.oprderitem" },
+                    { "order.orderbff", "order.orderbff" }
                 }
             }
         }

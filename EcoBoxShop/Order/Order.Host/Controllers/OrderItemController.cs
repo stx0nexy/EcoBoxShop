@@ -12,8 +12,8 @@ using Order.Host.Services.Interfaces;
 namespace Order.Host.Controllers;
 
 [ApiController]
-[Scope("order.oprderitem.api")]
-[Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
+[Scope("order.oprderitem")]
+[Authorize(Policy = AuthPolicy.AllowClientPolicy)]
 [Route(ComponentDefaults.DefaultRoute)]
 public class OrderItemController : ControllerBase
 {
@@ -35,7 +35,7 @@ public class OrderItemController : ControllerBase
     [ProducesResponseType(typeof(int?), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> AddOrderItem(AddOrderListItemRequest request)
     {
-        var result = await _orderItemService.Add(request.CatalogItem);
+        var result = await _orderItemService.Add(request.CatalogItem, request.OrderListId);
         return Ok(result);
     }
 
@@ -52,14 +52,6 @@ public class OrderItemController : ControllerBase
     public async Task<IActionResult> UpdateOrderItem(UpdateOrderListItemRequest request)
     {
         var result = await _orderItemService.Update(request.ItemId, request.CatalogItemId, request.OrderListId);
-        return Ok(result);
-    }
-
-    [HttpPost]
-    [ProducesResponseType(typeof(ItemResponse), (int)HttpStatusCode.OK)]
-    public async Task<IActionResult> GetCatalogItem(CatalogItemByIdRequest request)
-    {
-        var result = await _orderItemService.GetCatalogItemIdByItemId(request.Id);
         return Ok(result);
     }
 }

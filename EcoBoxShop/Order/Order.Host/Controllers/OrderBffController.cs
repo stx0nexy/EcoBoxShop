@@ -13,9 +13,9 @@ using Order.Host.Services.Interfaces;
 namespace Order.Host.Controllers;
 
 [ApiController]
-[Scope("order.orderbff.api")]
 [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
 [Route(ComponentDefaults.DefaultRoute)]
+[Scope("order.orderbff")]
 public class OrderBffController : ControllerBase
 {
     private readonly ILogger<OrderBffController> _logger;
@@ -41,6 +41,7 @@ public class OrderBffController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(int?), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> CreateOrder(AddOrderListRequest request)
     {

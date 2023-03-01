@@ -46,7 +46,7 @@ public class OrderService : BaseDataService<ApplicationDbContext>, IOrderService
         });
     }
 
-    public Task<bool> Delete(int userId)
+    public Task<bool?> Delete(int userId)
     {
         return ExecuteSafeAsync(() => _orderRepository.DeleteAsync(userId));
     }

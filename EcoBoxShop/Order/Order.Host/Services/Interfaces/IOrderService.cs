@@ -6,5 +6,5 @@ public interface IOrderService
 {
     Task<OrderListDto?> GetOrderListByUserIdAsync(string userId);
     Task<int?> Add(string userId, List<OrderListItemDto> items);
-    Task<bool> Delete(int userId);
+    Task<bool?> Delete(int userId);
 }
