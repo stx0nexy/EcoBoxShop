@@ -21,6 +21,14 @@ public class OrderListItemEntityTypeConfiguration : IEntityTypeConfiguration<Ord
 
         builder.Property(ci => ci.CatalogItemId)
             .IsRequired();
+        builder.Property(ci => ci.Title)
+            .IsRequired();
+        builder.Property(ci => ci.SubTitle)
+            .IsRequired();
+        builder.Property(ci => ci.PictureUrl)
+            .IsRequired();
+        builder.Property(ci => ci.Price)
+            .IsRequired();
 
         builder.HasOne(ci => ci.OrderList)
             .WithMany(w => w.OrderListItems)

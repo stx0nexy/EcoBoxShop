@@ -35,7 +35,7 @@ public class OrderItemController : ControllerBase
     [ProducesResponseType(typeof(int?), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> AddOrderItem(AddOrderListItemRequest request)
     {
-        var result = await _orderItemService.Add(request.CatalogItem, request.OrderListId);
+        var result = await _orderItemService.Add(request.CatalogItem, request.OrderListId, request.Title, request.SubTitle, request.PictureUrl, request.Price);
         return Ok(result);
     }
 
@@ -51,7 +51,7 @@ public class OrderItemController : ControllerBase
     [ProducesResponseType(typeof(OrderListItemResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> UpdateOrderItem(UpdateOrderListItemRequest request)
     {
-        var result = await _orderItemService.Update(request.ItemId, request.CatalogItemId, request.OrderListId);
+        var result = await _orderItemService.Update(request.ItemId, request.CatalogItemId, request.OrderListId, request.Title, request.SubTitle, request.PictureUrl, request.Price);
         return Ok(result);
     }
 }

@@ -25,9 +25,9 @@ public class OrderItemService : BaseDataService<ApplicationDbContext>, IOrderIte
         _mapper = mapper;
     }
 
-    public Task<int?> Add(int catalogItemId, int orderListId)
+    public Task<int?> Add(int catalogItemId, int orderListId, string title, string subTitle, string pictureUrl, decimal price)
     {
-        return ExecuteSafeAsync(() => _orderItemRepository.AddAsync(catalogItemId, orderListId));
+        return ExecuteSafeAsync(() => _orderItemRepository.AddAsync(catalogItemId, orderListId, title, subTitle, pictureUrl, price));
     }
 
     public Task<bool?> Delete(int itemId)
@@ -35,11 +35,11 @@ public class OrderItemService : BaseDataService<ApplicationDbContext>, IOrderIte
         return ExecuteSafeAsync(() => _orderItemRepository.DeleteAsync(itemId));
     }
 
-    public Task<OrderListItemDto> Update(int itemId, int catalogItemId, int orderListId)
+    public Task<OrderListItemDto> Update(int itemId, int catalogItemId, int orderListId, string title, string subTitle, string pictureUrl, decimal price)
     {
         return ExecuteSafeAsync(async () =>
         {
-            var result = await _orderItemRepository.UpdateAsync(new OrderListItemEntity() { ItemId = itemId, CatalogItemId = catalogItemId, OrderListId = orderListId });
+            var result = await _orderItemRepository.UpdateAsync(new OrderListItemEntity() { ItemId = itemId, CatalogItemId = catalogItemId, OrderListId = orderListId, Title = title, SubTitle = subTitle, Price = price, PictureUrl = pictureUrl });
             return _mapper.Map<OrderListItemDto>(result);
         });
     }

@@ -8,7 +8,7 @@ public class ItemByIdResponse
     public string Title { get; set; } = null!;
     public string SubTitle { get; set; } = null!;
     public string Description { get; set; } = null!;
-    public string PictureFileName { get; set; } = null!;
+    public string PictureUrl { get; set; } = null!;
     public decimal Price { get; set; }
     public int AvailableStock { get; set; }
     public CatalogBrandDto CatalogBrand { get; set; } = null!;

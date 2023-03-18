@@ -53,7 +53,7 @@ public class CatalogItemController : ControllerBase
             Title = result.Title,
             SubTitle = result.SubTitle,
             Description = result.Description,
-            PictureFileName = result.PictureUrl,
+            PictureUrl = result.PictureUrl,
             Price = result.Price,
             AvailableStock = result.AvailableStock,
             CatalogBrand = result.CatalogBrand,

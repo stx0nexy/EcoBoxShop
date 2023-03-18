@@ -28,7 +28,7 @@ public class BasketService : IBasketService
         _logger = logger;
     }
 
-    public async Task<UserBasket?> AddAsync(string userId, int itemId, int catalogItemId)
+    public async Task<UserBasket?> AddAsync(string userId, int itemId, int catalogItemId, string title, string subTitle, string pictureUrl, decimal price)
     {
         if (userId == null)
         {
@@ -46,7 +46,11 @@ public class BasketService : IBasketService
         result.BasketList.Add(new BasketItem()
             {
                 ItemId = itemId,
-                CatalogItemId = catalogItemId
+                CatalogItemId = catalogItemId,
+                Title = title,
+                SubTitle = subTitle,
+                PictureUrl = pictureUrl,
+                Price = price
             });
 
         _logger.LogInformation($"Add item {itemId} to basket ");

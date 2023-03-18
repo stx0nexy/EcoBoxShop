@@ -39,12 +39,16 @@ public class OrderItemServiceTest
         var catalogItemId = 1;
         var orderListId = 1;
         var testResult = 1;
+        string title = " ";
+        string subTitle = " ";
+        string pictureUrl = " ";
+        decimal price = 1;
 
         _orderItemRepository.Setup(s => s.AddAsync(
-            It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(testResult);
+            It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<decimal>())).ReturnsAsync(testResult);
 
         // act
-        var result = await _orderItemService.Add(catalogItemId, orderListId);
+        var result = await _orderItemService.Add(catalogItemId, orderListId, title, subTitle, pictureUrl, price);
 
         // assert
         result.Should().Be(testResult);
@@ -57,12 +61,16 @@ public class OrderItemServiceTest
         var catalogItemId = 1;
         var orderListId = 1;
         int? testResult = null!;
+        string title = " ";
+        string subTitle = " ";
+        string pictureUrl = " ";
+        decimal price = 1;
 
         _orderItemRepository.Setup(s => s.AddAsync(
-            It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(testResult);
+            It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<decimal>())).ReturnsAsync(testResult);
 
         // act
-        var result = await _orderItemService.Add(catalogItemId, orderListId);
+        var result = await _orderItemService.Add(catalogItemId, orderListId, title, subTitle, pictureUrl, price);
 
         // assert
         result.Should().Be(testResult);
@@ -110,12 +118,20 @@ public class OrderItemServiceTest
         {
             ItemId = 1,
             CatalogItemId = 1,
-            OrderListId = 1
+            OrderListId = 1,
+            Title = "test",
+            SubTitle = "test",
+            PictureUrl = "test",
+            Price = 1
         };
         var orderListItemDto = new OrderListItemDto()
         {
             ItemId = 1,
-            CatalogItemId = 1
+            CatalogItemId = 1,
+            Title = "test",
+            SubTitle = "test",
+            PictureUrl = "test",
+            Price = 1
         };
         _orderItemRepository.Setup(s => s.UpdateAsync(
             It.IsAny<OrderListItemEntity>())).ReturnsAsync(orderListItemEntity);
@@ -123,7 +139,7 @@ public class OrderItemServiceTest
             It.Is<OrderListItemEntity>(i => i.Equals(orderListItemEntity)))).Returns(orderListItemDto);
 
         // act
-        var result = await _orderItemService.Update(orderListItemEntity.ItemId, orderListItemEntity.CatalogItemId, orderListItemEntity.OrderListId);
+        var result = await _orderItemService.Update(orderListItemEntity.ItemId, orderListItemEntity.CatalogItemId, orderListItemEntity.OrderListId, orderListItemEntity.Title, orderListItemEntity.SubTitle, orderListItemEntity.PictureUrl, orderListItemEntity.Price);
 
         // assert
         result.Should().NotBeNull();
@@ -136,11 +152,15 @@ public class OrderItemServiceTest
         int itemId = 1;
         int catalogItemId = 1;
         int orderId = 1;
+        string title = " ";
+        string subTitle = " ";
+        string pictureUrl = " ";
+        decimal price = 1;
         _orderItemRepository.Setup(s => s.UpdateAsync(
             It.IsAny<OrderListItemEntity>())).Returns((Func<OrderListItemDto>)null!);
 
         // act
-        var result = await _orderItemService.Update(itemId, catalogItemId, orderId);
+        var result = await _orderItemService.Update(itemId, catalogItemId, orderId, title, subTitle, pictureUrl, price);
 
         // assert
         result.Should().BeNull();

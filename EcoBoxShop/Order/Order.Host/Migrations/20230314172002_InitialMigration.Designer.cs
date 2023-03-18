@@ -11,7 +11,7 @@ using Order.Host.Data;
 namespace Order.Host.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230228105243_InitialMigration")]
+    [Migration("20230314172002_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,6 +60,21 @@ namespace Order.Host.Migrations
 
                     b.Property<int>("OrderListId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("PictureUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("SubTitle")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("ItemId");
 

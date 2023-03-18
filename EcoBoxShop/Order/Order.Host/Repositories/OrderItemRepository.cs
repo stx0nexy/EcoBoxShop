@@ -19,12 +19,16 @@ public class OrderItemRepository : IOrderItemRepository
         _logger = logger;
     }
 
-    public async Task<int?> AddAsync(int catalogItemId, int orderListId)
+    public async Task<int?> AddAsync(int catalogItemId, int orderListId, string title, string subTitle, string pictureUrl, decimal price)
     {
         var entity = await _dbContext.OrderListItems.AddAsync(new OrderListItemEntity()
         {
             CatalogItemId = catalogItemId,
-            OrderListId = orderListId
+            OrderListId = orderListId,
+            Title = title,
+            SubTitle = subTitle,
+            PictureUrl = pictureUrl,
+            Price = price
         });
         _logger.LogInformation("Add Order List Item to DB");
 

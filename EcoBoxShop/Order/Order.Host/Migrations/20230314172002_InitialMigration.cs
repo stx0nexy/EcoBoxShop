@@ -34,6 +34,10 @@ namespace Order.Host.Migrations
                 {
                     ItemId = table.Column<int>(type: "integer", nullable: false),
                     CatalogItemId = table.Column<int>(type: "integer", nullable: false),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    SubTitle = table.Column<string>(type: "text", nullable: false),
+                    PictureUrl = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
                     OrderListId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

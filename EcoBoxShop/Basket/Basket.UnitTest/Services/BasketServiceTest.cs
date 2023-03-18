@@ -35,7 +35,11 @@ public class BasketServiceTest
         string userId = "user1";
         int itemId = 1;
         int catalogItemId = 1;
-        var userBasket = new UserBasket()
+        string title = " ";
+        string subTitle = " ";
+        string pictureUrl = " ";
+        decimal price = 1;
+            var userBasket = new UserBasket()
         {
             UserId = userId,
             BasketList = new List<BasketItem?>
@@ -52,7 +56,7 @@ public class BasketServiceTest
             .ReturnsAsync(userBasket);
 
         // Act
-        var result = await _basketService.AddAsync(userId, itemId, catalogItemId);
+        var result = await _basketService.AddAsync(userId, itemId, catalogItemId, title, subTitle, pictureUrl, price);
 
         // Assert
         result.Should().Be(userBasket);
@@ -65,6 +69,10 @@ public class BasketServiceTest
         string userId = null!;
         int itemId = 1;
         int catalogItemId = 1;
+        string title = " ";
+        string subTitle = " ";
+        string pictureUrl = " ";
+        decimal price = 1;
         UserBasket userBasket = null!;
 
         _cacheService
@@ -72,7 +80,7 @@ public class BasketServiceTest
             .ReturnsAsync(userBasket);
 
         // act
-        var result = await _basketService.AddAsync( userId, itemId, catalogItemId);
+        var result = await _basketService.AddAsync( userId, itemId, catalogItemId, title, subTitle, pictureUrl, price);
 
         // assert
         _logger.Verify(

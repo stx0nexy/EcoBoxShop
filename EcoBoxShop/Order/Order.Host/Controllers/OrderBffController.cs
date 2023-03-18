@@ -33,6 +33,7 @@ public class OrderBffController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(OrderListResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetOrder(OrderListByUserIdRequest request)
     {

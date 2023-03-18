@@ -13,6 +13,5 @@ public class PaginatedItemsRequest<T>
     [Display(Name = "Page size")]
     public int PageSize { get; set; }
 
-    [Required(ErrorMessage = "Fill in this field")]
     public Dictionary<T, int>? Filters { get; set; }
 }

@@ -70,6 +70,7 @@ public class CatalogBffController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(ItemByIdResponse), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Item(ItemByIdRequest request)
     {
@@ -80,7 +81,7 @@ public class CatalogBffController : ControllerBase
             Title = result.Title,
             SubTitle = result.SubTitle,
             Description = result.Description,
-            PictureFileName = result.PictureUrl,
+            PictureUrl = result.PictureUrl,
             Price = result.Price,
             AvailableStock = result.AvailableStock,
             CatalogBrand = result.CatalogBrand,
@@ -105,6 +106,7 @@ public class CatalogBffController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(ItemsResponse<CatalogSubCategoryDto>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> SubCategoriesByCategory(SubCategoriesByCategoryRequest request)
     {

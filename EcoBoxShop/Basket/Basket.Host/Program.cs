@@ -38,7 +38,6 @@ builder.Services.AddSwaggerGen(options =>
                 Scopes = new Dictionary<string, string>()
                 {
                     { "mvc", "website" },
-                    { "basket", "basket" },
                     { "order.orderbff", "order.orderbff" }
                 }
             }

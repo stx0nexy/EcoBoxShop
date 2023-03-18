@@ -59,6 +59,21 @@ namespace Order.Host.Migrations
                     b.Property<int>("OrderListId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("PictureUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("SubTitle")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("ItemId");
 
                     b.HasIndex("OrderListId");

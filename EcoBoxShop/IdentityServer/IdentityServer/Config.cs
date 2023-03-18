@@ -60,14 +60,21 @@ namespace IdentityServer
             {
                 new Client
                 {
-                    ClientId = "mvc_pkce",
-                    ClientName = "MVC PKCE Client",
+                    ClientId = "client_pkce",
+                    ClientName = "React PKCE Client",
                     AllowedGrantTypes = GrantTypes.Code,
                     ClientSecrets = {new Secret("secret".Sha256())},
-                    RedirectUris = { $"{configuration["MvcUrl"]}/signin-oidc"},
-                    AllowedScopes = {"openid", "profile", "mvc"},
+                    RequireConsent = false,
                     RequirePkce = true,
-                    RequireConsent = false
+
+                    RedirectUris = { $"{configuration["MvcUrl"]}/callback" },
+                    PostLogoutRedirectUris = { $"{configuration["MvcUrl"]}" },
+                    AllowedCorsOrigins = { $"{configuration["MvcUrl"]}" },
+
+                    AllowedScopes =
+                    {
+                        "openid", "profile", "mvc", "basket", "order.orderbff"
+                    },
                 },
                 new Client
                 {

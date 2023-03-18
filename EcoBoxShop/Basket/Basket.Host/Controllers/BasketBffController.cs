@@ -13,7 +13,6 @@ namespace Basket.Host.Controllers;
 [ApiController]
 [Authorize(Policy = AuthPolicy.AllowEndUserPolicy)]
 [Route(ComponentDefaults.DefaultRoute)]
-[Scope("basket")]
 public class BasketBffController : ControllerBase
 {
     private readonly IBasketService _service;
@@ -28,14 +27,16 @@ public class BasketBffController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(BasketResponse<BasketItem>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> AddToBasket(AddRequest request)
     {
-        var result = await _service.AddAsync(request.UserId, request.ItemId, request.CatalogItemId);
+        var result = await _service.AddAsync(request.UserId, request.ItemId, request.CatalogItemId, request.Title, request.SubTitle, request.PictureUrl, request.Price);
         return Ok(result);
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> DeleteItemFromBasket(RemoveRequest request)
     {
@@ -44,6 +45,7 @@ public class BasketBffController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(BasketResponse<BasketItem>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetBasket(GetRequest request)
     {
@@ -52,6 +54,7 @@ public class BasketBffController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> CreateOrder(GetRequest request)
     {
