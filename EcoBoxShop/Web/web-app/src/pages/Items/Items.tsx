@@ -6,8 +6,6 @@ import {
     Grid,
     Pagination,
     ListItem,
-    Checkbox,
-    Typography,
     List
 } from '@mui/material';
 import * as React from 'react';

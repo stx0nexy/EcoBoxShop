@@ -1,5 +1,6 @@
 import { ReactElement, FC, useContext } from 'react';
 import { Card,
+    CardActionArea,
     CardContent,
     CardMedia,
     Typography,
@@ -9,19 +10,23 @@ import { Card,
     Grid
 } from '@mui/material';
 import { AppStoreContext } from '../../../App';
+import { IItem } from '../../../interfaces/item';
 import { useNavigate } from 'react-router-dom';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
-import BasketStore from '../../Basket/BasketStore';
+import OrdersStore from '../../Order/OrdersStore';
 import { IBasketItem } from '../../../interfaces/basketItem';
+import { IOrderItem } from '../../../interfaces/orderItem';
 
 interface ItemCardProps {
-    basketItem: IBasketItem,
+    orderListItem: IOrderItem,
     isClicable: boolean
 };
-const store = new BasketStore();
-const BasketCard: FC<ItemCardProps> = (card): ReactElement => {
+const store = new OrdersStore();
+const OrderCard: FC<ItemCardProps> = (card): ReactElement => {
     const app = useContext(AppStoreContext);
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
 
     const handleClick = () => {
@@ -57,38 +62,25 @@ const BasketCard: FC<ItemCardProps> = (card): ReactElement => {
                     <CardMedia
                         sx={{ width: 200, height: 200 }}
                         component='img'
-                        image={card.basketItem?.pictureUrl}
+                        image={card.orderListItem?.pictureUrl}
                     />
                 </Grid>
                 <Grid item xs={7}>
                 <CardContent>
                 <Typography noWrap gutterBottom variant='h6' component='div'>
-                    {card.basketItem?.title}
+                    {card.orderListItem?.title}
                 </Typography>
                 <Typography noWrap gutterBottom variant='subtitle2' component='div'>
-                    {card.basketItem?.subTitle}
+                    {card.orderListItem?.subTitle}
                 </Typography>
                 <Typography variant='body2' textAlign='end' color='text.secondary'>
-                    {card.basketItem?.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                    {card.orderListItem?.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                 </Typography>
                     </CardContent>
-                </Grid>
-                <Grid item xs={2}>
-                    <Typography textAlign='end'
-                    onClick={() => store.remove(app.authStore.user?.profile.sub!, card.basketItem?.itemId)}>
-                        <Button onClick={handleClick}><CloseIcon /></Button>
-                        <Snackbar
-                            open={open}
-                            autoHideDuration={2000}
-                            onClose={handleClose}
-                            message="Item removed from basket"
-                            action={action}
-                        />
-                    </Typography>
                 </Grid>
             </Grid>
         </Card>
     );
 };
 
-export default BasketCard;
+export default OrderCard;

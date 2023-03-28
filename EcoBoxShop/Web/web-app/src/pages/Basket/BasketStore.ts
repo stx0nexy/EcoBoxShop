@@ -2,13 +2,15 @@ import { makeAutoObservable, runInAction } from "mobx";
 import * as basketApi from "../../api/modules/basket";
 import { IBasket } from "../../interfaces/basket";
 import { IBasketItem } from "../../interfaces/basketItem";
+import AuthStore from "../../stores/AuthStore";
 
 class BasketStore {
+    store = new AuthStore();
     basket: IBasket[] = [];
     basketItems: IBasketItem[] = [];
+    totalCost = 0;
     isLoading = false;
     userId = '';
-
     constructor() {
         makeAutoObservable(this);
         runInAction(this.prefetchData);
@@ -17,8 +19,6 @@ class BasketStore {
         if (userId) {
             this.userId = userId;
         }
-        else {
-        }
     }
 
     prefetchData = async () => {
@@ -26,8 +26,9 @@ class BasketStore {
             this.isLoading = true;
             this.check(this.userId);
             const result = await basketApi.getBasket(this.userId);
-            this.basket = result.basket;
-            this.basketItems = result.basketList
+            this.basket = result;
+            this.basketItems = result.basketList;
+            this.totalCost = result.totalCost;
         }
         catch (e) {
             if (e instanceof Error) {
@@ -45,20 +46,18 @@ class BasketStore {
     async remove(userId: string, itemId: number) {
         this.check(userId);
         await basketApi.deletefrombasket(this.userId, itemId);
-        this.prefetchData();
+        await this.prefetchData();
     }
 
     async makeAnOrder(userId: string) {
         this.check(userId);
         await basketApi.createorder(this.userId);
-        this.basket = [];
+        await this.prefetchData();
     }
 
     async get(userId: string) {
         this.check(userId);
-        const result = await basketApi.getBasket(this.userId);
-        this.basket = result.basketList;
-        this.prefetchData();
+        await this.prefetchData();
     }
 }
 

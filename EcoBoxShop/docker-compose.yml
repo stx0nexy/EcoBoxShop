@@ -65,6 +65,15 @@ services:
       - CatalogApi=http://www.alevelwebsite.com:5000
     ports:
       - 5002:5002
+  web:
+    container_name: lde.web
+    build:
+      context: ./Web/web-app
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=Development
+    ports:
+      - 5001:3000
   nginx:
     image: nginx
     container_name: lde.nginx

@@ -1,7 +1,6 @@
 export interface IOrderItem {
-    "id": number,
-    "catalogId": string,
-    "orderListId": string,
+    "itemId": number,
+    "catalogItemId": string,
     "title": string,
     "subTitle": string,
     "pictureUrl": string,

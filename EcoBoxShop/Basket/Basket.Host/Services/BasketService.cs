@@ -53,6 +53,8 @@ public class BasketService : IBasketService
                 Price = price
             });
 
+        Counter(ref result);
+
         _logger.LogInformation($"Add item {itemId} to basket ");
         await _cacheService.AddOrUpdateAsync(userId, result);
         return result;
@@ -69,6 +71,7 @@ public class BasketService : IBasketService
 
         var basketItem = basket.BasketList.FirstOrDefault(f => f!.ItemId == itemId);
         basket.BasketList.Remove(basketItem);
+        Counter(ref basket);
         _logger.LogInformation($"Deleted item {itemId} in basket for user {userId} ");
         await _cacheService.AddOrUpdateAsync(userId, basket);
         return true;
@@ -107,8 +110,24 @@ public class BasketService : IBasketService
             new UserBasket()
             {
                 UserId = userId,
+                TotalCost = basket.TotalCost,
                 BasketList = basket.BasketList
             });
         _logger.LogInformation($"Post basket to Order");
+        foreach (var item in basket.BasketList)
+        {
+           await DeleteAsync(userId, item!.ItemId);
+        }
+
+        _logger.LogInformation($"Basket empty");
+    }
+
+    private void Counter(ref UserBasket basket)
+    {
+        basket.TotalCost = 0;
+        foreach (var item in basket.BasketList)
+        {
+            basket.TotalCost += item!.Price;
+        }
     }
 }

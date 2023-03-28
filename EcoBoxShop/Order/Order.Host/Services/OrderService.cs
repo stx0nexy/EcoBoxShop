@@ -25,21 +25,25 @@ public class OrderService : BaseDataService<ApplicationDbContext>, IOrderService
         _mapper = mapper;
     }
 
-    public async Task<OrderListDto?> GetOrderListByUserIdAsync(string userId)
+    public async Task<PaginatedItems<OrderListDto?>> GetOrderListByUserIdAsync(string userId)
     {
         return await ExecuteSafeAsync(async () =>
         {
             var result = await _orderRepository.GetOrderListByUserId(userId);
-            return _mapper.Map<OrderListDto>(result);
+            return new PaginatedItems<OrderListDto?>()
+            {
+                TotalCount = result.TotalCount,
+                Data = result.Data.Select(s => _mapper.Map<OrderListDto>(s)).ToList()
+            };
         });
     }
 
-    public async Task<int?> Add(string userId, List<OrderListItemDto> items)
+    public async Task<int?> Add(string userId, decimal totalCost, List<OrderListItemDto> items)
     {
         return await ExecuteSafeAsync(async () =>
         {
             var result = await _orderRepository
-                .AddAsync(userId, items.Select(s => _mapper
+                .AddAsync(userId, totalCost, items.Select(s => _mapper
                     .Map<OrderListItemEntity>(s))
                     .ToList());
             return result;

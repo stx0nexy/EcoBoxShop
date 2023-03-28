@@ -1,7 +1,12 @@
 import {
-    Box, Button, Container, CircularProgress, Grid, Typography, List,
-    ListItem,
-    ListItemText,
+    Box, 
+    Button, 
+    Container, 
+    CircularProgress, 
+    Grid, 
+    Typography, 
+    List,
+    Snackbar,
     IconButton,
     Divider,
 } from "@mui/material";
@@ -9,15 +14,41 @@ import { observer } from "mobx-react-lite";
 import { FC, ReactElement, useContext, useEffect } from "react";
 import { AppStoreContext } from "../../App";
 import BasketStore from "./BasketStore";
+import CloseIcon from '@mui/icons-material/Close';
 import BasketCard from './components/BasketCard';
+import React from "react";
 
 const store = new BasketStore();
-const id = 5;
 const Basket: FC<any> = (): ReactElement => {
     const app = useContext(AppStoreContext);
     useEffect(() => {
         store.get(app.authStore.user?.profile.sub!);
     }, [])
+    const [open, setOpen] = React.useState(false);
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+
+        setOpen(false);
+    };
+    const action = (
+        <React.Fragment>
+        <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+        >
+            <CloseIcon fontSize="small" />
+        </IconButton>
+        </React.Fragment>
+    );
 
     return (
         <>
@@ -48,10 +79,23 @@ const Basket: FC<any> = (): ReactElement => {
                     )}
                     <Container>
                         <Grid container justifyContent="end">
+                        <Grid item>
+                            <Typography textAlign='end'>
+                                Total Cost: {store.totalCost.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                            </Typography>
+                        </Grid>
                             <Grid item>
-                                <Button variant="contained" onClick={() => store.makeAnOrder(app.authStore.user?.profile.sub!)}>
-                                    Make Order
-                                </Button>
+                                <Typography textAlign='end'
+                                onClick={() => store.makeAnOrder(app.authStore.user?.profile.sub!)}>
+                                    <Button variant="contained" onClick={handleClick}>Make Order</Button>
+                                    <Snackbar
+                                        open={open}
+                                        autoHideDuration={6000}
+                                        onClose={handleClose}
+                                        message="The order has been sent. Check it in orders"
+                                        action={action}
+                                    />
+                                </Typography>
                             </Grid>
                         </Grid>
                     </Container>

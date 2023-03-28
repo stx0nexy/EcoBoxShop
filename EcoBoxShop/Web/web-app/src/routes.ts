@@ -39,7 +39,7 @@ export const routes: Array<Route> = [
         component: Orders
     },
     {
-        place: 'userMenu',
+        place: 'void',
         key: 'item-user',
         title: 'Item Info',
         path: 'item/:id',

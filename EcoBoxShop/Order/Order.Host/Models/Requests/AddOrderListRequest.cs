@@ -6,6 +6,7 @@ namespace Order.Host.Models.Requests
     public class AddOrderListRequest
     {
         public string UserId { get; set; } = null!;
+        public decimal TotalCost { get; set; }
         public List<OrderListItemDto> BasketList { get; set; } = null!;
     }
 }

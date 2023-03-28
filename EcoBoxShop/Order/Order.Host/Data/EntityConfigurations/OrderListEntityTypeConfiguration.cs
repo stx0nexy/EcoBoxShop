@@ -19,6 +19,10 @@ public class OrderListEntityTypeConfiguration : IEntityTypeConfiguration<OrderLi
         builder.Property(cb => cb.UserId)
             .IsRequired()
             .HasMaxLength(100);
+
+        builder.Property(ci => ci.TotalCost)
+            .IsRequired();
+
         builder.HasMany(m => m.OrderListItems)
             .WithOne(w => w.OrderList);
     }

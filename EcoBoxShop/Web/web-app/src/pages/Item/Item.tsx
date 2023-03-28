@@ -9,14 +9,17 @@ import {
     CardMedia,
     CardContent,
     Typography,
-    getListItemButtonUtilityClass
+    Snackbar,
+    IconButton
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { IItem } from '../../interfaces/item';
 import { useParams } from 'react-router-dom';
 import { getItem } from '../../api/modules/catalog';
 import { AppStoreContext } from '../../App';
 import { observer } from 'mobx-react-lite';
 import BasketStore from '../Basket/BasketStore';
+import React from 'react';
 
 const Item: FC<any> = (): ReactElement => {
     const app = useContext(AppStoreContext);
@@ -47,6 +50,32 @@ const Item: FC<any> = (): ReactElement => {
     const addToBasket = async () => {
         await basketStore.add(app.authStore.user?.profile.sub!, item?.id!, item?.id!, item?.title!, item?.subTitle!, item?.pictureUrl!, item?.price!);
     }
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+
+        setOpen(false);
+    };
+    const action = (
+        <React.Fragment>
+        <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+        >
+            <CloseIcon fontSize="small" />
+        </IconButton>
+        </React.Fragment>
+    );
 
     return (
         <Box
@@ -92,10 +121,18 @@ const Item: FC<any> = (): ReactElement => {
                                     <Typography variant="h5" textAlign='right'>
                                         {item.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                                     </Typography>
-                                    <Typography textAlign='right'>
-                                        <Button variant='contained' color="secondary" onClick={addToBasket}>
-                                            Add To Basket
+                                    <Typography textAlign='end'
+                                    onClick={addToBasket}>
+                                        <Button variant='contained' color="secondary"
+                                         onClick={handleClick}>Add To Basket
                                         </Button>
+                                        <Snackbar
+                                            open={open}
+                                            autoHideDuration={6000}
+                                            onClose={handleClose}
+                                            message="Item added to the basket"
+                                            action={action}
+                                        />
                                     </Typography>
                                 </Card>
                             }

@@ -81,6 +81,11 @@ const UserAuth = () => {
                                             {page.title}
                                         </Typography>
                                     </MenuItem>
+                                    <MenuItem onClick={handleCloseUserMenu}>
+                                        <Typography textAlign='center' onClick={signout}>
+                                            Log Out
+                                        </Typography>
+                                    </MenuItem>
                                 </Link>
                             ))}
                         </Menu>

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Order.Host.Configurations;
+using Order.Host.Data;
+using Order.Host.Models.Dtos;
 using Order.Host.Models.Requests;
 using Order.Host.Models.Response;
 using Order.Host.Services.Interfaces;
@@ -34,7 +36,7 @@ public class OrderBffController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(OrderListResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(PaginatedItems<OrderListDto?>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetOrder(OrderListByUserIdRequest request)
     {
         var result = await _orderService.GetOrderListByUserIdAsync(request.UserId);
@@ -46,7 +48,7 @@ public class OrderBffController : ControllerBase
     [ProducesResponseType(typeof(int?), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> CreateOrder(AddOrderListRequest request)
     {
-        var result = await _orderService.Add(request.UserId, request.BasketList);
+        var result = await _orderService.Add(request.UserId, request.TotalCost, request.BasketList);
         return Ok(result);
     }
 

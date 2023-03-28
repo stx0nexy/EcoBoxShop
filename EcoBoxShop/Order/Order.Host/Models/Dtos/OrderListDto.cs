@@ -4,5 +4,6 @@ public class OrderListDto
 {
     public int OrderListId { get; set; }
     public string? UserId { get; set; }
+    public decimal TotalCost { get; set; }
     public List<OrderListItemDto> OrderListItems { get; set; } = null!;
 }
