@@ -6,10 +6,10 @@ import { Card,
     IconButton,
     Button,
     Snackbar,
-    Grid
+    Grid,
+    Box
 } from '@mui/material';
 import { AppStoreContext } from '../../../App';
-import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import React from 'react';
 import BasketStore from '../../Basket/BasketStore';
@@ -74,7 +74,7 @@ const BasketCard: FC<ItemCardProps> = (card): ReactElement => {
                     </CardContent>
                 </Grid>
                 <Grid item xs={2}>
-                    <Typography textAlign='end'
+                    <Box textAlign='end'
                     onClick={() => store.remove(app.authStore.user?.profile.sub!, card.basketItem?.itemId)}>
                         <Button onClick={handleClick}><CloseIcon /></Button>
                         <Snackbar
@@ -84,7 +84,7 @@ const BasketCard: FC<ItemCardProps> = (card): ReactElement => {
                             message="Item removed from basket"
                             action={action}
                         />
-                    </Typography>
+                    </Box>
                 </Grid>
             </Grid>
         </Card>

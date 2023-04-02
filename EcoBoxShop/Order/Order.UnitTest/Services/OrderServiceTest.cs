@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -73,6 +72,7 @@ public class OrderServiceTest
     {
         // arrange
         var id = "test";
+        var totalCost = 100;
         var itemDto = new OrderListItemDto()
         {
             ItemId = 1,
@@ -94,13 +94,13 @@ public class OrderServiceTest
         int? testResult = 1;
 
         _orderRepository.Setup(s => s.AddAsync(
-            It.IsAny<string>(), itemsEntities)).ReturnsAsync(testResult);
+            It.IsAny<string>(), totalCost, itemsEntities)).ReturnsAsync(testResult);
         _mapper.Setup(s => s
             .Map<OrderListItemEntity>(It.Is<OrderListItemDto>(i => i
                 .Equals(itemDto)))).Returns(item);
 
         // act
-        var result = await _orderService.Add(id, items);
+        var result = await _orderService.Add(id, totalCost, items);
 
         // assert
         result.Should().NotBeNull();
@@ -111,6 +111,7 @@ public class OrderServiceTest
     {
         // arrange
         var id = "test";
+        var totalCost = 100;
         List<OrderListItemDto> items = new List<OrderListItemDto>()
         {
             new OrderListItemDto()
@@ -139,10 +140,10 @@ public class OrderServiceTest
         _mapper.Setup(s => s.Map<OrderListItemEntity>(
             It.Is<OrderListItemEntity>(i => i.Equals(items)))).Returns(item);
         _orderRepository.Setup(s => s.AddAsync(
-            It.IsAny<string>(), itemsEntities)).ReturnsAsync(testResult);
+            It.IsAny<string>(), totalCost, itemsEntities)).ReturnsAsync(testResult);
 
         // act
-        var result = await _orderService.Add(id, items);
+        var result = await _orderService.Add(id, totalCost, items);
 
         // assert
         result.Should().Be(testResult);
@@ -153,19 +154,43 @@ public class OrderServiceTest
     {
         // arrange
         var id = "test";
-        OrderListEntity orderListEntity = new OrderListEntity()
+        var paginatedOrderListEntity = new PaginatedItems<OrderListEntity?>()
         {
-            OrderListId = 1,
-            UserId = id,
+            TotalCount = 1,
+            Data = new List<OrderListEntity>()
+            {
+                new OrderListEntity()
+                {
+                    OrderListId = 1,
+                    UserId = id
+                }
+            }
         };
-        OrderListDto orderListDto = new OrderListDto()
+        var paginatedOrderListDto = new PaginatedItems<OrderListDto>()
+        {
+            TotalCount = 1,
+            Data = new List<OrderListDto>()
+            {
+                new OrderListDto()
+                {
+                    OrderListId = 1,
+                    UserId = id
+                }
+            }
+        };
+        var orderListEntity = new OrderListEntity()
+        {
+          OrderListId = 1,
+          UserId = id
+        };
+        var orderListDto = new OrderListDto()
         {
             OrderListId = 1,
             UserId = id
         };
 
         _orderRepository.Setup(s => s.GetOrderListByUserId(
-            It.IsAny<string>())).ReturnsAsync(orderListEntity);
+            id)).ReturnsAsync(paginatedOrderListEntity);
         _mapper.Setup(s => s.Map<OrderListDto>(
             It.Is<OrderListEntity>(i => i.Equals(orderListEntity)))).Returns(orderListDto);
 
@@ -182,7 +207,7 @@ public class OrderServiceTest
         // arrange
         var id = "test";
         _orderRepository.Setup(s => s.GetOrderListByUserId(
-            It.IsAny<string>())).ReturnsAsync((Func<OrderListEntity>)null!);
+            It.IsAny<string>())).ReturnsAsync((Func<PaginatedItems<OrderListEntity?>>)null!);
 
         // act
         var result = await _orderService.GetOrderListByUserIdAsync(id);

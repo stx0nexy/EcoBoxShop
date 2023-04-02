@@ -20,6 +20,8 @@ class OrdersStore {
     private check = (userId: string | undefined) => {
         if (userId) {
             this.userId = userId;
+        }else{
+            window.location.href = '/errorlogin';
         }
     }
 

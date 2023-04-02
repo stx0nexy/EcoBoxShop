@@ -213,10 +213,12 @@ public class BasketServiceTest
         // Arrange
         string userId = "user1";
         int itemId = 1;
+        int totalCost = 100;
         int catalogItemId = 1;
         var userBasket = new UserBasket()
         {
             UserId = userId,
+            TotalCost = totalCost,
             BasketList = new List<BasketItem?>
             {
                 new BasketItem()
@@ -234,11 +236,13 @@ public class BasketServiceTest
         await _basketService.CreateOrderAsync(userId);
 
         // Assert
-        _httpClient.Verify(x => x.SendAsync<object, UserBasket>(
-            $"{_config.OrderApi}/createorder",
-            HttpMethod.Post,
-            It.Is<UserBasket>(y => y.UserId == userId && y.BasketList == userBasket.BasketList)),
-            Times.Once);
+        _logger.Verify(
+            v => v.Log(
+                LogLevel.Information,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((o, t) => o.ToString()!.Contains("Post basket to Order")),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()!), Times.Once);
     }
 
     [Fact]

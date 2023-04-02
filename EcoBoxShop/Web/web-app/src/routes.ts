@@ -4,6 +4,7 @@ import Basket from './pages/Basket';
 import Orders from './pages/Order/Orders';
 import Items from './pages/Items';
 import Item from './pages/Item';
+import ErrorLogin from './pages/ErrorLogin';
 
 export const routes: Array<Route> = [
     {
@@ -45,5 +46,13 @@ export const routes: Array<Route> = [
         path: 'item/:id',
         enabled: false,
         component: Item
+    },
+    {
+        place: 'void',
+        key: 'error-login',
+        title: 'Error Login',
+        path: '/errorlogin',
+        enabled: false,
+        component: ErrorLogin
     },
 ] 

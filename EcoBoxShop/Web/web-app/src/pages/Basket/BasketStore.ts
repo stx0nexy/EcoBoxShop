@@ -1,23 +1,22 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable } from "mobx";
 import * as basketApi from "../../api/modules/basket";
 import { IBasket } from "../../interfaces/basket";
 import { IBasketItem } from "../../interfaces/basketItem";
-import AuthStore from "../../stores/AuthStore";
 
 class BasketStore {
-    store = new AuthStore();
     basket: IBasket[] = [];
     basketItems: IBasketItem[] = [];
     totalCost = 0;
     isLoading = false;
     userId = '';
     constructor() {
-        makeAutoObservable(this);
-        runInAction(this.prefetchData);
+        makeAutoObservable(this, { basketItems: true, totalCost: true});
     }
     private check = (userId: string | undefined) => {
         if (userId) {
             this.userId = userId;
+        }else{
+            window.location.href = '/errorlogin';
         }
     }
 

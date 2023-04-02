@@ -121,7 +121,7 @@ const Item: FC<any> = (): ReactElement => {
                                     <Typography variant="h5" textAlign='right'>
                                         {item.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                                     </Typography>
-                                    <Typography textAlign='end'
+                                    <Box textAlign='end'
                                     onClick={addToBasket}>
                                         <Button variant='contained' color="secondary"
                                          onClick={handleClick}>Add To Basket
@@ -133,7 +133,7 @@ const Item: FC<any> = (): ReactElement => {
                                             message="Item added to the basket"
                                             action={action}
                                         />
-                                    </Typography>
+                                    </Box>
                                 </Card>
                             }
                         </>

@@ -2,18 +2,17 @@ import { makeAutoObservable } from 'mobx';
 import { User, UserManager, Log, WebStorageStateStore } from 'oidc-client';
 
 const config = {
-    authority: 'http://localhost:5002',
+    authority: 'http://www.alevelwebsite.com:5002',
     client_id: 'client_pkce',
     client_secret: "secret",
-    redirect_uri: `http://localhost:3000/callback`,
+    redirect_uri: `http://www.alevelwebsite.com/callback`,
     response_type: 'code',
-    scope: 'openid profile mvc basket order.orderbff',
-    post_logout_redirect_uri: `http://localhost:3000`,
+    scope: 'openid profile mvc',
+    post_logout_redirect_uri: `http://www.alevelwebsite.com`,
     automaticSilentRenew: true,
     monitorSession: true,
-    response_mode: `fragment`,
     checkSessionInterval: 2000,
-    silent_redirect_uri: `http://localhost:3000`,
+    silent_redirect_uri: `http://www.alevelwebsite.com`,
     filterProtocolClaims: true,
     revokeAccessTokenOnSignout: true,
     revokeRefreshTokenOnSignout: true,
@@ -37,11 +36,12 @@ class AuthStore {
         });
     };
 
-    login() {
-        this.oidc_client.signinRedirect({ state: { someState: "state" } });
+    async login() {
+        await this.oidc_client.signinRedirect();
+        this.user = await this.oidc_client.getUser();
     };
 
-    logout() {
+    async logout() {
         this.oidc_client.signoutRedirect();
         this.user = null;
     };
@@ -54,5 +54,6 @@ class AuthStore {
         });
     }
 };
+
 
 export default AuthStore;

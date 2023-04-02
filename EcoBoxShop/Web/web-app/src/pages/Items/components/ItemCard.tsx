@@ -6,7 +6,8 @@ import { Card,
     Typography,
     IconButton,
     Button,
-    Snackbar
+    Snackbar,
+    Box
 } from '@mui/material';
 import { AppStoreContext } from '../../../App';
 import { IItem } from '../../../interfaces/item';
@@ -82,7 +83,7 @@ const ItemCard: FC<ItemCardProps> = (card): ReactElement => {
                 <Typography variant='body2' color='text.secondary'>
                     {card.item?.price.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
                 </Typography>
-                <Typography textAlign='end'
+                <Box textAlign='end'
                 onClick={() => store.add(app.authStore.user?.profile.sub!, card.item?.id, card.item?.id, card.item?.title, card.item?.subTitle, card.item?.pictureUrl, card.item?.price)}>
                     <Button onClick={handleClick}><ShoppingBasketIcon /></Button>
                     <Snackbar
@@ -92,7 +93,7 @@ const ItemCard: FC<ItemCardProps> = (card): ReactElement => {
                         message="Item added to the basket"
                         action={action}
                     />
-                </Typography>
+                </Box>
             </CardContent>
         </>
                 </CardActionArea>

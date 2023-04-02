@@ -85,7 +85,7 @@ const Basket: FC<any> = (): ReactElement => {
                             </Typography>
                         </Grid>
                             <Grid item>
-                                <Typography textAlign='end'
+                                <Box textAlign='end'
                                 onClick={() => store.makeAnOrder(app.authStore.user?.profile.sub!)}>
                                     <Button variant="contained" onClick={handleClick}>Make Order</Button>
                                     <Snackbar
@@ -95,7 +95,7 @@ const Basket: FC<any> = (): ReactElement => {
                                         message="The order has been sent. Check it in orders"
                                         action={action}
                                     />
-                                </Typography>
+                                </Box>
                             </Grid>
                         </Grid>
                     </Container>
